@@ -43,13 +43,13 @@ public class LevelSystem : MonoBehaviour
     public void StartDelay(string text)
     {
         Result.Change(text);
-        CheckResult();
         StartCoroutine(StartCoroutine(2f));
     }
 
     private IEnumerator StartCoroutine(float time)
     {
         yield return new WaitForSeconds(time);
+        CheckResult();
         StartLevel();
     }
 

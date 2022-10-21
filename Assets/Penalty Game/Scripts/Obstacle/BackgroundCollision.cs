@@ -6,6 +6,8 @@ public class BackgroundCollision : MonoBehaviour, ICollision
 
     public void Hit()
     {
+        LevelState.Instance.SetMiss();
+        LevelSystem.Instance.StartDelay(_result);
         BallMark.Instance.Delete();
     }
 

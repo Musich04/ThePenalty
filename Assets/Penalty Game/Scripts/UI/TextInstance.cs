@@ -18,4 +18,14 @@ public abstract class TextInstance : MonoBehaviour, IActivity
     {
         Text.gameObject.SetActive(true);
     }
+
+    private void Start()
+    {
+        LevelSystem.Instance.OnStart += Disable;
+    }
+
+    private void OnDisable()
+    {
+        LevelSystem.Instance.OnStart -= Disable;
+    }
 }

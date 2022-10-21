@@ -6,7 +6,8 @@ public class GoalkeeperCollision : MonoBehaviour, ICollision
 
     public void Hit()
     {
-        // parry
+        LevelState.Instance.SetMiss();
+        LevelSystem.Instance.StartDelay(_result);
     }
 
     public string Result()

@@ -5,23 +5,24 @@ using UnityEngine;
 public class BallMark : MonoBehaviour
 {
     public static BallMark Instance { get; private set; }
-    public event System.Action<string> OnDestroy;
+    public event System.Action<string> OnDelete;
 
     private const string _result = "Miss!";
 
     public BallCollision BallCollision => GetComponent<BallCollision>();
+    public BallDirection BallDirection => GetComponent<BallDirection>();
     
     private void Awake()
     {
         Instance = this;
 
-        GetComponent<BallDirection>().OnDirect += T => DestroyDelay();
+        BallDirection.OnDirect += T => DestroyDelay();
     }
 
     public void Delete()
     {
         Instance = null;
-        GetComponent<BallDirection>().OnDirect -= T => DestroyDelay();
+        BallDirection.OnDirect -= T => DestroyDelay();
         StopAllCoroutines();
         Destroy(gameObject);
     }
@@ -34,8 +35,13 @@ public class BallMark : MonoBehaviour
     private IEnumerator DestroyCoroutine(float time)
     {
         yield return new WaitForSeconds(time);
-        OnDestroy?.Invoke(_result);
-        OnDestroy = null;
+        LevelState.Instance.SetMiss();
+        LevelSystem.Instance.StartDelay(_result);
         Delete();
+    }
+
+    private void OnDestroy()
+    {
+        OnDelete = null;
     }
 }

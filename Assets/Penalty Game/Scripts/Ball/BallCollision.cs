@@ -10,9 +10,6 @@ public class BallCollision : MonoBehaviour
     {
         if (other.TryGetComponent(out ICollision obstacle) == true)
         {
-            OnCollision?.Invoke(obstacle.Result());
-            OnCollision = null;
-            
             obstacle.Hit();
         }
     }
@@ -22,9 +19,11 @@ public class BallCollision : MonoBehaviour
         if (collision.collider.TryGetComponent(out ICollision obstacle) == true)
         {
             obstacle.Hit();
-
-            OnCollision?.Invoke(obstacle.Result());
-            OnCollision = null;
         }
+    }
+
+    private void OnDestroy()
+    {
+        OnCollision = null;
     }
 }

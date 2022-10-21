@@ -10,14 +10,11 @@ public class GoalSectionCollision : MonoBehaviour, ICollision
 
     public void Hit()
     {
+        LevelState.Instance.SetGoal();
+        LevelSystem.Instance.StartDelay(_result);
         AddPoint();
         BallMark.Instance.Delete();
         Disable();
-    }
-
-    public string Result()
-    {
-        return _result;
     }
 
     private void AddPoint()

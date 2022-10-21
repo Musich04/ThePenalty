@@ -20,12 +20,6 @@ public class PointHandler : MonoBehaviour
         OnChanged?.Invoke(_points);
     }
 
-    public void MinusPoint(int value)
-    {
-        _points -= value;
-        OnChanged?.Invoke(_points);
-    }
-
     public void RemovePoints()
     {
         _points = 0;

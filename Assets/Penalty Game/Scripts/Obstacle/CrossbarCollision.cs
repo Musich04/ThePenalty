@@ -6,7 +6,8 @@ public class CrossbarCollision : MonoBehaviour, ICollision
 
     public void Hit()
     {
-        Debug.Log("Crossbar");
+        LevelState.Instance.SetMiss();
+        LevelSystem.Instance.StartDelay(_result);
     }
 
     public string Result()

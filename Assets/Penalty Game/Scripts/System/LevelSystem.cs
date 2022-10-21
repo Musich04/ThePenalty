@@ -4,36 +4,46 @@ using UnityEngine;
 
 public class LevelSystem : MonoBehaviour
 {
-    [SerializeField] private BallFactory BallFactory;
+    public static LevelSystem Instance { get; private set; }
+    public event System.Action OnStart;
+
     [SerializeField] private List<GoalSectionCollision> SectionList;
-    [SerializeField] private TextInstance HitResult;
+    [SerializeField] private TextInstance Result;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
+        HealthHandler.Instance.OnGameOver += NewGame;
+
+        NewGame();
+    }
+
+    private void NewGame()
+    {
         StartLevel();
+        PointHandler.Instance.RemovePoints();
+        HealthHandler.Instance.SetFullHealth();
     }
 
     private void StartLevel()
     {
-        CreateBall();
-        EnableSections();
-        HitResult.Disable();
-    }
-
-    private void CreateBall()
-    {
         if (BallMark.Instance != null)
             BallMark.Instance.Delete();
 
-        BallFactory.CreateBall();
+        OnStart?.Invoke();
 
-        BallMark.Instance.BallCollision.OnCollision += StartDelay;
-        BallMark.Instance.OnDestroy += StartDelay;
+        foreach (var section in SectionList)
+            section.Enable();
     }
 
-    private void StartDelay(string text)
+    public void StartDelay(string text)
     {
-        HitResult.Change(text);
+        Result.Change(text);
+        CheckResult();
         StartCoroutine(StartCoroutine(2f));
     }
 
@@ -43,9 +53,14 @@ public class LevelSystem : MonoBehaviour
         StartLevel();
     }
 
-    private void EnableSections()
+    private void CheckResult()
     {
-        foreach (var section in SectionList)
-            section.Enable();
+        if (LevelState.Instance.IsGoal == false)
+            HealthHandler.Instance.MinusHealth();
+    }
+
+    private void OnDisable()
+    {
+        HealthHandler.Instance.OnGameOver -= NewGame;
     }
 }

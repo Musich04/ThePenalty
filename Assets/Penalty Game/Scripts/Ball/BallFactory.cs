@@ -10,4 +10,14 @@ public class BallFactory : MonoBehaviour
     {
        Instantiate(SimpleBall.prefab);
     }
+
+    private void OnEnable()
+    {
+        LevelSystem.Instance.OnStart += CreateBall;
+    }
+
+    private void OnDisable()
+    {
+        LevelSystem.Instance.OnStart -= CreateBall;
+    }
 }

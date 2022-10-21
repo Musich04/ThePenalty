@@ -9,4 +9,19 @@ public class ResultText : TextInstance, IActivity
         Text.text = text;
         Enable();
     }
+
+    private void GameOverText()
+    {
+        Change("Game Over");
+    }
+
+    private void OnEnable()
+    {
+        HealthHandler.Instance.OnGameOver += GameOverText;
+    }
+
+    private void OnDisable()
+    {
+        HealthHandler.Instance.OnGameOver -= GameOverText;
+    }
 }

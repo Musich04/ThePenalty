@@ -43,4 +43,9 @@ public class BallDirection : MonoBehaviour
         _ballCollider.OnDown -= _pointDown.Init;
         _ballCollider.OnUp -= SetDirection;
     }
+
+    private void OnDestroy()
+    {
+        OnDirect = null;
+    }
 }

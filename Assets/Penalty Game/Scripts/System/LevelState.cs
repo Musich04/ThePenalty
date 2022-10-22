@@ -22,4 +22,14 @@ public class LevelState : MonoBehaviour
     {
         IsGoal = false;
     }
+
+    private void OnEnable()
+    {
+        HealthHandler.Instance.OnGameOver += SetMiss;
+    }
+
+    private void OnDisable()
+    {
+        HealthHandler.Instance.OnGameOver -= SetMiss;
+    }
 }

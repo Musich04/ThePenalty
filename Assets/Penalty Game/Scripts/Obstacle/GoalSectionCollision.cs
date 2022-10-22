@@ -3,6 +3,7 @@ using TMPro;
 
 public class GoalSectionCollision : MonoBehaviour, ICollision
 {
+    [SerializeField] private AudioPlayer Audio;
     [SerializeField] private int Points;
     [SerializeField] private TMP_Text Text;
 
@@ -10,11 +11,13 @@ public class GoalSectionCollision : MonoBehaviour, ICollision
 
     public void Hit()
     {
-        LevelState.Instance.SetGoal();
-        LevelSystem.Instance.StartDelay(_result);
-        AddPoint();
         BallMark.Instance.Delete();
+
+        Audio.Play();
+        LevelState.Instance.SetGoal();
+        AddPoint();
         Disable();
+        LevelSystem.Instance.StartDelay(_result);
     }
 
     private void AddPoint()
@@ -38,5 +41,5 @@ public class GoalSectionCollision : MonoBehaviour, ICollision
         Text.gameObject.SetActive(false);
     }
 
-    
+
 }

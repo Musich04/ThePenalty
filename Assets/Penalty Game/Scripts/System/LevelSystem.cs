@@ -10,9 +10,12 @@ public class LevelSystem : MonoBehaviour
     [SerializeField] private List<GoalSectionCollision> SectionList;
     [SerializeField] private TextInstance Result;
 
+    private LevelAudioResult _resultAudio;
+
     private void Awake()
     {
         Instance = this;
+        _resultAudio = GetComponent<LevelAudioResult>();
     }
 
     private void Start()
@@ -56,7 +59,13 @@ public class LevelSystem : MonoBehaviour
     private void CheckResult()
     {
         if (LevelState.Instance.IsGoal == false)
+        {
             HealthHandler.Instance.MinusHealth();
+            _resultAudio.PlayMiss();
+            StopAllCoroutines();
+        }
+        else
+            _resultAudio.PlayGoal();
     }
 
     private void OnDisable()
